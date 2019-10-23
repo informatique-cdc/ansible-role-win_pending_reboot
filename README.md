@@ -1,41 +1,32 @@
-# win_pending_reboot
+# win_pending_reboot - Checks for pending Windows Reboots
 
-win_pending_reboot est un module Ansible permettant de vérifier les redémarrages en attente pour les hôtes Windows. Il est basé en partie sur le code de la ressource DSC [xPendingReboot].
+## Synopsis
 
-## Systèmes d'exploitation pris en charge
+This Ansible module examines three specific registry locations where a Windows Server might indicate that a reboot is pending.
 
-Les versions suivantes du système d'exploitation sont prises en charge par ce rôle :
+## Parameters
 
-* Windows Server 2012
-* Windows Server 2012 R2
-* Windows Server 2016
+| Parameter                      | Required | Defaults | Choices     | Comments                                                                                 |
+| ------------------------------ | -------- | -------: | ----------- | ---------------------------------------------------------------------------------------- |
+| skip_component_based_servicing | non      |     `no` | `yes`, `no` | Specifies whether to skip reboots triggered by the [Component-Based Servicing component] |
+| skip_windows_update            | non      |     `no` | `yes`, `no` | Specifies whether to skip reboots triggered by Windows Update                            |
+| skip_pending_file_rename       | non      |     `no` | `yes`, `no` | Specifies whether to skip pending file rename reboots                                    |
+| skip_pending_computer_rename   | non      |     `no` | `yes`, `no` | Specifies whether to skip reboots triggered by a pending computer rename                 |
+| skip_ccm_client_sdk            | non      |     `no` | `yes`, `no` | Specifies whether to skip reboots triggered by the ConfigMgr client                      |
 
-## Prérequis
-
-* WMF 5.0 ou supérieure
-
-## Options
-
-| Paramètre     | Requis | Valeur par défaut | Valeurs possibles            | Description                                              |
-|----------------|----------|--------:|--------------------|---------------------------------------------------------|
-| skip_component_based_servicing | non | `no` | `yes`, `no` |  Specifies whether to skip reboots triggered by the [Component-Based Servicing component] |
-| skip_windows_update | non | `no` | `yes`, `no` | Specifies whether to skip reboots triggered by Windows Update |
-| skip_pending_file_rename | non | `no` | `yes`, `no` | Specifies whether to skip pending file rename reboots |
-| skip_pending_computer_rename | non | `no` | `yes`, `no` | Specifies whether to skip reboots triggered by a pending computer rename |
-| skip_ccm_client_sdk | non | `no` | `yes`, `no` | Specifies whether to skip reboots triggered by the ConfigMgr client |
-
-## Exemples
+## Examples
 
 ```yaml
 ---
-  roles:
-    - win_pending_reboot
+- hosts: localhost
+
+  roles: win_pending_reboot
 
   tasks:
 
     - name: get the pending reboot status
       win_pending_reboot:
-        skip_ccm_client_sdk: yes
+        skip_ccm_client_sdk: no
       register: test_pending_reboot_result
 
     - name: reboot if need
@@ -43,30 +34,34 @@ Les versions suivantes du système d'exploitation sont prises en charge par ce r
       when: test_pending_reboot_result.reboot_required
 ```
 
-## Valeurs de retour
+## Return Values
 
-Voici les champs propres à ce module :
+The following are the fields unique to this module:
 
-| Key              | Description |   Returned| Type    | Example |
-|------------------|-------------|----------:|---------|---------|
-| component_based_servicing         | True when the Component-Based Servicing component requested a reboot        |  success | boolean | `False`  |
-| windows_update         | True when the Windows Update requested a reboot        |  success | boolean | `False`  |
-| pending_file_rename         | True when a pending file rename triggered a reboot        |  success | boolean | `False`  |
-| pending_computer_rename        | True when a pending computer rename triggered a reboot        |  success | boolean | `False`  |
-| ccm_client_sdk        | True when the ConfigMgr client triggered a reboot        |  success and `skip_ccm_client_sdk` equal `no` | boolean | `False`  |
-| reboot_required        | True when the target server requires a reboot        |  success | boolean | `True`  |
+| Key                       | Description                                                          |                                     Returned | Type    | Example |
+| ------------------------- | -------------------------------------------------------------------- | -------------------------------------------: | ------- | ------- |
+| component_based_servicing | True when the Component-Based Servicing component requested a reboot |                                      success | boolean | `False` |
+| windows_update            | True when the Windows Update requested a reboot                      |                                      success | boolean | `False` |
+| pending_file_rename       | True when a pending file rename triggered a reboot                   |                                      success | boolean | `False` |
+| pending_computer_rename   | True when a pending computer rename triggered a reboot               |                                      success | boolean | `False` |
+| ccm_client_sdk            | True when the ConfigMgr client triggered a reboot                    | success and `skip_ccm_client_sdk` equal `no` | boolean | `False` |
+| reboot_required           | True when the target server requires a reboot                        |                                      success | boolean | `True`  |
 
-## Informations sur l'auteur
+## License
 
-Les personnes suivantes ont écrit ou contribuées à l'écriture de ce module :
+[Apache 2](LICENCE.txt)
 
-* [Stéphane Bilqué (stephane.bilque@caissedesdepots.fr)](stephane.bilque@caissedesdepots.fr)
+## Author Information
 
-## Versions
+* [Stéphane Bilqué](https://github.com/sbilque)
 
-Voir [CHANGELOG.md](CHANGELOG.md)
+## Open Source Components
 
-[xPendingReboot]: https://github.com/PowerShell/xPendingReboot.git
-[ansible-windows-pending-reboot]: https://github.com/valerius257/ansible-windows-pending-reboot
+This module uses some partial or full parts of open source functions in PowerShell from the following source :
+
+| Name                                | Source |
+| ----------------------------------- | ------ |
+| xPendingReboot                      |        [GitHub](https://github.com/PowerShell/xPendingReboot.git)                                |
+| ansible-windows-pending-reboot      |        [GitHub](https://github.com/valerius257/ansible-windows-pending-reboot)                   |
 
 [Component-Based Servicing component]: https://blogs.iis.net/wonyoo/servicing-via-cbs-component-based-servicing

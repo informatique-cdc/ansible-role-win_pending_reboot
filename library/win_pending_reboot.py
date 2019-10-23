@@ -27,12 +27,12 @@ ANSIBLE_METADATA = {'metadata_version': '1.0',
                     'supported_by': 'communoty'}
 
 
-DOCUMENTATION = '''
+DOCUMENTATION = r'''
 ---
 module: win_pending_reboot
-short_description: Role for checking for pending Windows Reboots.
+short_description: Checks for pending Windows Reboots
 description:
-    - "This role examines three specific registry locations where a Windows Server might indicate that a reboot is pending."
+    - This Ansible module examines three specific registry locations where a Windows Server might indicate that a reboot is pending.
 options:
   skip_component_based_servicing:
     description:
@@ -67,18 +67,25 @@ options:
 author: "Stéphane Bilqué"
 '''
 
-EXAMPLES = '''
-- name: get the pending reboot status
-  win_pending_reboot:
-    skip_ccm_client_sdk: no
-  register: test_pending_reboot_result
+EXAMPLES = r'''
+---
+- hosts: localhost
 
-- name: reboot if need
-  win_reboot:
-  when: test_pending_reboot_result.reboot_required
+  roles: win_pending_reboot
+
+  tasks:
+
+    - name: get the pending reboot status
+      win_pending_reboot:
+        skip_ccm_client_sdk: no
+      register: test_pending_reboot_result
+
+    - name: reboot if need
+      win_reboot:
+      when: test_pending_reboot_result.reboot_required
 '''
 
-RETURN = '''
+RETURN = r'''
 component_based_servicing:
   description: True when the Component-Based Servicing component requested a reboot
   returned: success
