@@ -49,7 +49,9 @@ The following are the fields unique to this module:
 
 ## License
 
-[Apache 2](LICENCE.txt)
+MIT
+
+See [LICENSE](LICENSE) to see the full text.
 
 ## Author Information
 

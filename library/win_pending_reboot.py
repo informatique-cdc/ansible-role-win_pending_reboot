@@ -4,19 +4,8 @@
 # This is a windows documentation stub.  Actual code lives in the .ps1
 # file of the same name.
 
-# Copyright 2019 Informatique CDC. All rights reserved.
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License
+# Copyright: (c) 2019, Informatique CDC.
+# The MIT License (MIT) (see LICENSE)
 
 from __future__ import absolute_import, division, print_function
 __metaclass__ = type
@@ -24,7 +13,7 @@ __metaclass__ = type
 
 ANSIBLE_METADATA = {'metadata_version': '1.0',
                     'status': ['preview'],
-                    'supported_by': 'communoty'}
+                    'supported_by': 'community'}
 
 
 DOCUMENTATION = r'''
@@ -32,7 +21,7 @@ DOCUMENTATION = r'''
 module: win_pending_reboot
 short_description: Checks for pending Windows Reboots
 description:
-    - This Ansible module examines three specific registry locations where a Windows Server might indicate that a reboot is pending.
+  - This Ansible module examines three specific registry locations where a Windows Server might indicate that a reboot is pending.
 options:
   skip_component_based_servicing:
     description:
@@ -87,32 +76,32 @@ EXAMPLES = r'''
 
 RETURN = r'''
 component_based_servicing:
-  description: True when the Component-Based Servicing component requested a reboot
+  description: True when the Component-Based Servicing component requested a reboot.
   returned: success
   type: boolean
   sample: False
 windows_update:
-  description: True when the Windows Update requested a reboot
+  description: True when the Windows Update requested a reboot.
   returned: success
   type: boolean
   sample: False
 pending_file_rename:
-  description: True when a pending file rename triggered a reboot
+  description: True when a pending file rename triggered a reboot.
   returned: success
   type: boolean
   sample: False
 pending_computer_rename:
-  description: True when a pending computer rename triggered a reboot
+  description: True when a pending computer rename triggered a reboot.
   returned: success
   type: boolean
   sample: False
 ccm_client_sdk:
-  description: True when the ConfigMgr client triggered a reboot
+  description: True when the ConfigMgr client triggered a reboot.
   returned: success and C(skip_ccm_client_sdk) = no
   type: boolean
   sample: False
 reboot_required:
-  description: True when the target server requires a reboot
+  description: True when the target server requires a reboot.
   returned: success
   type: boolean
   sample: True  

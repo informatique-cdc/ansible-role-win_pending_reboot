@@ -3,7 +3,7 @@ galaxy_info:
   description: Checks for pending Windows Reboots
   company: Informatique CDC
 
-  license: Apache
+  license: MIT
 
   min_ansible_version: 2.6
 
