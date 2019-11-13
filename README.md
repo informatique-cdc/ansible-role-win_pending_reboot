@@ -8,11 +8,11 @@ This Ansible module examines three specific registry locations where a Windows S
 
 | Parameter                      | Required | Defaults | Choices     | Comments                                                                                 |
 | ------------------------------ | -------- | -------: | ----------- | ---------------------------------------------------------------------------------------- |
-| skip_component_based_servicing | non      |     `no` | `yes`, `no` | Specifies whether to skip reboots triggered by the [Component-Based Servicing component] |
-| skip_windows_update            | non      |     `no` | `yes`, `no` | Specifies whether to skip reboots triggered by Windows Update                            |
-| skip_pending_file_rename       | non      |     `no` | `yes`, `no` | Specifies whether to skip pending file rename reboots                                    |
-| skip_pending_computer_rename   | non      |     `no` | `yes`, `no` | Specifies whether to skip reboots triggered by a pending computer rename                 |
-| skip_ccm_client_sdk            | non      |     `no` | `yes`, `no` | Specifies whether to skip reboots triggered by the ConfigMgr client                      |
+| skip_component_based_servicing | no      |     `no` | `yes`, `no` | Specifies whether to skip reboots triggered by the [Component-Based Servicing component] |
+| skip_windows_update            | no      |     `no` | `yes`, `no` | Specifies whether to skip reboots triggered by Windows Update                            |
+| skip_pending_file_rename       | no      |     `no` | `yes`, `no` | Specifies whether to skip pending file rename reboots                                    |
+| skip_pending_computer_rename   | no      |     `no` | `yes`, `no` | Specifies whether to skip reboots triggered by a pending computer rename                 |
+| skip_ccm_client_sdk            | no      |     `no` | `yes`, `no` | Specifies whether to skip reboots triggered by the ConfigMgr client                      |
 
 ## Examples
 
