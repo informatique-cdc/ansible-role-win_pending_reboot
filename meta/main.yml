@@ -1,4 +1,5 @@
 galaxy_info:
+  role_name: win_pending_reboot
   author: Stéphane Bilqué
   description: Checks for pending Windows Reboots
   company: Informatique CDC
