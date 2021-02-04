@@ -55,6 +55,10 @@ options:
         default: 'yes'
 author:
     - Stéphane Bilqué (@sbilque)
+notes:
+    - This module uses some partial or full parts of open source functions in PowerShell from the following source.
+    - xPendingReboot U(https://github.com/PowerShell/xPendingReboot.git)
+    - ansible-windows-pending-reboot U(https://github.com/valerius257/ansible-windows-pending-reboot)
 '''
 
 EXAMPLES = r'''

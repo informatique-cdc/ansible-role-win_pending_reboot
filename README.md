@@ -49,6 +49,12 @@ Common return values are documented [here](https://docs.ansible.com/ansible/late
 |__ccm_client_sdk__<br><font color="purple">boolean</font> | success and _skip_ccm_client_sdk_ = `no` | `True` when the ConfigMgr client triggered a reboot.<br><br>__Sample:__<br><font color=blue>False</font> |
 |__reboot_required__<br><font color="purple">boolean</font> | success | `True` when the target server requires a reboot.<br><br>__Sample:__<br><font color=blue>True</font> |
 
+## Notes
+
+* This module uses some partial or full parts of open source functions in PowerShell from the following source.
+* xPendingReboot <https://github.com/PowerShell/xPendingReboot.git>
+* ansible-windows-pending-reboot <https://github.com/valerius257/ansible-windows-pending-reboot>
+
 ## Authors
 
 * Stéphane Bilqué (@sbilque)
