@@ -21,46 +21,48 @@ DOCUMENTATION = r'''
 module: win_pending_reboot
 short_description: Checks for pending Windows Reboots
 description:
-  - This Ansible module examines three specific registry locations where a Windows Server might indicate that a reboot is pending.
+    - This Ansible module examines three specific registry locations where a Windows Server might indicate that a reboot is pending.
 options:
-  skip_component_based_servicing:
-    description:
-      - Specifies whether to skip reboots triggered by the Component-Based Servicing component
-    required: false
-    type: bool
-    default: 'no'
-  skip_windows_update:
-    description:
-      - Specifies whether to skip reboots triggered by Windows Update
-    required: false
-    type: bool
-    default: 'no'
-  skip_pending_file_rename:
-    description:
-      -  Specifies whether to skip pending file rename reboots
-    required: false
-    type: bool
-    default: 'no'
-  skip_pending_computer_rename:
-    description:
-      -  Specifies whether to skip reboots triggered by a pending computer rename
-    required: false
-    type: bool
-    default: 'no'
-  skip_ccm_client_sdk:
-    description:
-      -  Specifies whether to skip reboots triggered by the ConfigMgr client
-    required: false
-    type: bool
-    default: 'yes'    
-author: "Stéphane Bilqué"
+    skip_component_based_servicing:
+        description:
+            - Specifies whether to skip reboots triggered by the Component-Based Servicing component
+        required: false
+        type: bool
+        default: 'no'
+    skip_windows_update:
+        description:
+            - Specifies whether to skip reboots triggered by Windows Update
+        required: false
+        type: bool
+        default: 'no'
+    skip_pending_file_rename:
+        description:
+          -  Specifies whether to skip pending file rename reboots
+        required: false
+        type: bool
+        default: 'no'
+    skip_pending_computer_rename:
+        description:
+          -  Specifies whether to skip reboots triggered by a pending computer rename
+        required: false
+        type: bool
+        default: 'no'
+    skip_ccm_client_sdk:
+        description:
+          -  Specifies whether to skip reboots triggered by the ConfigMgr client
+        required: false
+        type: bool
+        default: 'yes'
+author:
+    - Stéphane Bilqué (@sbilque)
 '''
 
 EXAMPLES = r'''
 ---
 - hosts: localhost
 
-  roles: win_pending_reboot
+  roles:
+    - win_pending_reboot
 
   tasks:
 
@@ -76,33 +78,33 @@ EXAMPLES = r'''
 
 RETURN = r'''
 component_based_servicing:
-  description: True when the Component-Based Servicing component requested a reboot.
-  returned: success
-  type: boolean
-  sample: False
+    description: C(True) when the Component-Based Servicing component requested a reboot.
+    returned: success
+    type: bool
+    sample: False
 windows_update:
-  description: True when the Windows Update requested a reboot.
-  returned: success
-  type: boolean
-  sample: False
+    description: C(True) when the Windows Update requested a reboot.
+    returned: success
+    type: bool
+    sample: False
 pending_file_rename:
-  description: True when a pending file rename triggered a reboot.
-  returned: success
-  type: boolean
-  sample: False
+    description: C(True) when a pending file rename triggered a reboot.
+    returned: success
+    type: bool
+    sample: False
 pending_computer_rename:
-  description: True when a pending computer rename triggered a reboot.
-  returned: success
-  type: boolean
-  sample: False
+    description: C(True) when a pending computer rename triggered a reboot.
+    returned: success
+    type: bool
+    sample: False
 ccm_client_sdk:
-  description: True when the ConfigMgr client triggered a reboot.
-  returned: success and C(skip_ccm_client_sdk) = no
-  type: boolean
-  sample: False
+    description: C(True) when the ConfigMgr client triggered a reboot.
+    returned: success and I(skip_ccm_client_sdk) = C(no)
+    type: bool
+    sample: False
 reboot_required:
-  description: True when the target server requires a reboot.
-  returned: success
-  type: boolean
-  sample: True  
+    description: C(True) when the target server requires a reboot.
+    returned: success
+    type: bool
+    sample: True
 '''

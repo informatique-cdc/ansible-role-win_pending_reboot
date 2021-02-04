@@ -13,10 +13,13 @@ galaxy_info:
   platforms:
    - name: Windows
      versions:
+      - 2012
       - 2016
+      - 2019
 
   galaxy_tags:
     - windows
     - reboot
+    - pending
 
 dependencies: []
