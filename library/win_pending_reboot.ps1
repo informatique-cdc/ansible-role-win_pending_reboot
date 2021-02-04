@@ -19,27 +19,25 @@ $skipPendingComputerRename = Get-AnsibleParam -obj $params -name "skip_pending_c
 $SkipCcmClientSDK = Get-AnsibleParam -obj $params -name "skip_pending_computer_rename" -type "bool" -failifempty $false -default $true
 
 $set_args = @{
-    ErrorAction = "Stop"
-    check_mode = $check_mode
-    diff_mode = $diff_mode
-    SkipComponentBasedServicing = $SkipComponentBasedServicing 
-    skipWindowsUpdate = $skipWindowsUpdate
-    skipPendingFileRename = $skipPendingFileRename
-    skipPendingComputerRename = $skipPendingComputerRename
-    SkipCcmClientSDK = $SkipCcmClientSDK
+    ErrorAction                 = "Stop"
+    check_mode                  = $check_mode
+    diff_mode                   = $diff_mode
+    SkipComponentBasedServicing = $SkipComponentBasedServicing
+    skipWindowsUpdate           = $skipWindowsUpdate
+    skipPendingFileRename       = $skipPendingFileRename
+    skipPendingComputerRename   = $skipPendingComputerRename
+    SkipCcmClientSDK            = $SkipCcmClientSDK
 }
 
 # Localized messages
-data LocalizedData
-{
+data LocalizedData {
     # culture="en-US"
     ConvertFrom-StringData @'
     UnableToQueryCCM             = Unable to query CCM_ClientUtilities: {0}
 '@
 }
 
-Function Get-TargetResource
-{
+Function Get-TargetResource {
     <#
     .SYNOPSIS
     Get informations where a Windows Server might indicate that a reboot is pending.
@@ -56,22 +54,18 @@ Function Get-TargetResource
     )
 
     $ComponentBasedServicingKeys = (Get-ChildItem 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Component Based Servicing\').Name
-    if ($ComponentBasedServicingKeys)
-    {
+    if ($ComponentBasedServicingKeys) {
         $ComponentBasedServicing = $ComponentBasedServicingKeys.Split("\") -contains "RebootPending"
     }
-    else
-    {
+    else {
         $ComponentBasedServicing = $false
     }
 
     $WindowsUpdateKeys = (Get-ChildItem 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Auto Update\').Name
-    if ($WindowsUpdateKeys)
-    {
+    if ($WindowsUpdateKeys) {
         $WindowsUpdate = $WindowsUpdateKeys.Split("\") -contains "RebootRequired"
     }
-    else
-    {
+    else {
         $WindowsUpdate = $false
     }
 
@@ -82,28 +76,25 @@ Function Get-TargetResource
 
     $result = @{
         component_based_servicing = $ComponentBasedServicing
-        windows_update = $WindowsUpdate
-        pending_file_rename = $PendingFileRename
-        pending_computer_rename = $PendingComputerRename
-        }
+        windows_update            = $WindowsUpdate
+        pending_file_rename       = $PendingFileRename
+        pending_computer_rename   = $PendingComputerRename
+    }
 
-    if (-not $SkipCcmClientSDK)
-    {
+    if (-not $SkipCcmClientSDK) {
         $CCMSplat = @{
-            NameSpace='ROOT\ccm\ClientSDK'
-            Class='CCM_ClientUtilities'
-            Name='DetermineIfRebootPending'
-            ErrorAction='Stop'
+            NameSpace   = 'ROOT\ccm\ClientSDK'
+            Class       = 'CCM_ClientUtilities'
+            Name        = 'DetermineIfRebootPending'
+            ErrorAction = 'Stop'
         }
 
-        Try
-        {
+        Try {
             $CCMClientSDK = Invoke-WmiMethod @CCMSplat
             $SCCMSDK = ($CCMClientSDK.ReturnValue -eq 0) -and ($CCMClientSDK.IsHardRebootPending -or $CCMClientSDK.RebootPending)
             $result += { ccm_client_sdk = $SCCMSDK }
         }
-        Catch
-        {
+        Catch {
             Write-Warning ($LocalizedData.UnableToQueryCCM -f $_);
         }
     }
@@ -111,8 +102,7 @@ Function Get-TargetResource
     return $result
 }
 
-function Test-TargetResource 
-{
+function Test-TargetResource {
     <#
     .SYNOPSIS
     Checks for pending Windows Reboots.
@@ -145,35 +135,31 @@ function Test-TargetResource
     $status = Get-TargetResource -SkipCcmClientSDK $SkipCcmClientSDK
     $reboot_required = $false
 
-    if(-not $SkipComponentBasedServicing -and $status.component_based_servicing)
-    {
+    if (-not $SkipComponentBasedServicing -and $status.component_based_servicing) {
         Write-Verbose 'Pending component based servicing reboot found.'
         $reboot_required = $true
     }
 
-    if(-not $SkipWindowsUpdate -and $status.windows_update)
-    {
+    if (-not $SkipWindowsUpdate -and $status.windows_update) {
         Write-Verbose 'Pending Windows Update reboot found.'
         $reboot_required = $true
     }
 
-    if(-not $SkipPendingFileRename -and $status.pending_file_rename)
-    {
+    if (-not $SkipPendingFileRename -and $status.pending_file_rename) {
         Write-Verbose 'Pending file rename found.'
         $reboot_required = $true
     }
 
-    if(-not $SkipPendingComputerRename -and $status.pending_computer_rename)
-    {
+    if (-not $SkipPendingComputerRename -and $status.pending_computer_rename) {
         Write-Verbose 'Pending computer rename found.'
         $reboot_required = $true
     }
 
-    $status += @{ reboot_required = $reboot_required } 
+    $status += @{ reboot_required = $reboot_required }
 
-    return $status    
+    return $status
 }
 
-$result = Test-TargetResource @set_args    
+$result = Test-TargetResource @set_args
 
 Exit-Json -obj $result
